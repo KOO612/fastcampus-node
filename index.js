@@ -15,30 +15,39 @@ const server = http.createServer((req, res) => {
   });
   // 데이터가 로드되었음을 서버에 알림
   res.end("<h1>hello</h1>");
-});
+});ßß
 */
-
+const dataObject = { a: "a", b: "b" };
 const server = http.createServer((req, res) => {
-  if (req.url == "/home") {
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "application/json");
-    res.end(
-      JSON.stringify({
-        a: "a",
-        b: "b",
-      })
-    );
-  } else if (req.url == "/about") {
-    res.setHeader("Content-Type", "text/html");
-    res.write("<html>");
-    res.write("<body>");
-    res.write("<h1>hello</h1>");
-    res.write("</body>");
-    res.write("</html>");
-    res.end();
+  if (req.method === "POST" && req.url === "/home") {
+    req.on("data", (data) => {
+      console.log("data", data);
+      const stringfiedData = data.toString();
+      console.log("stringfiedData", stringfiedData);
+      Object.assign(dataObject, JSON.parse(stringfiedData));
+    });
   } else {
-    res.statusCode = 404;
-    res.end();
+    if (req.url == "/home") {
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "application/json");
+      res.end(
+        JSON.stringify({
+          a: "a",
+          b: "b",
+        })
+      );
+    } else if (req.url == "/about") {
+      res.setHeader("Content-Type", "text/html");
+      res.write("<html>");
+      res.write("<body>");
+      res.write("<h1>hello</h1>");
+      res.write("</body>");
+      res.write("</html>");
+      res.end();
+    } else {
+      res.statusCode = 404;
+      res.end();
+    }
   }
 });
 server.listen(port, () => {
