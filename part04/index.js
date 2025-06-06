@@ -1,6 +1,8 @@
 const express = require("express");
 const port = 3000;
 
+const usersController = require("./contollers/users.controller");
+
 const app = express();
 
 const users = [
