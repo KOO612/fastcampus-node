@@ -6,7 +6,9 @@ exports.getUsers = function (req, res) {
 
 exports.getUser = function (req, res) {
   const userId = Number(req.params.userId);
-  const user = model(userId);
+  // const user = model[userId];
+
+  const user = model.find((user) => user.id == userId);
 
   if (user) {
     res.status(200).json(user);
