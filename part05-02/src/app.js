@@ -1,10 +1,12 @@
 const express = require("express");
 const path = require("path");
+const cookieSession = require("cookie-session");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
 
 const dotenv = require("dotenv");
 dotenv.config();
+const cookieEncryptionKey = ["key1", "key2"];
 
 const User = require("./models/users.model");
 
@@ -13,6 +15,12 @@ const { error } = require("console");
 
 const app = express();
 const port = 3000;
+
+app.use(
+  cookieSession({
+    keys: cookieEncryptionKey,
+  })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
